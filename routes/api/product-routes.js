@@ -34,15 +34,19 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Category and Tag data(join)
 
   try {
-    const productData = await Product.findBypk(req.params.id,
+    const productData = await Product.findAll({
+        where: {
+          id: req.params.id,
+        }
+    },
       {
       include: [
         {
-        model: Category, required: false,
+        model: Category
         },
         {
           //product belongToMany Tags through ProductTag
-        model: Tag, through: ProductTag, required: false,
+        model: Tag, through: ProductTag
         }
     ]
     });
@@ -91,7 +95,7 @@ router.post('/',  (req, res) => {
 });
 
 // update product
-router.put('/:id', async (req, res) => {
+router.put('/:id',  (req, res) => {
   // update product data
   Product.update(req.body, {
     where: {
