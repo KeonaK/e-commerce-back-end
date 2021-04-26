@@ -7,12 +7,12 @@ router.get('/', async (req, res) => {
   // find all categories
   // be sure to include its associated Products
   try {
-    const categoryDB = await Category.findAll({
+    const categoryData = await Category.findAll({
       //left join [{syntax}]
       include: [{model: Product}]
     });
-    // if the categoryDB is successfully created, the new response will be returned as json
-  res.status(200).json(categoryDB)
+    // if the categoryData is successfully created, the new response will be returned as json
+  res.status(200).json(categoryData)
   } catch (err) {
     res.status(400).json(err);
   }
@@ -23,16 +23,16 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Products
   let idParams = req.params.id;
   try {
-    const categoryDB = await Category.findByPk(idParams ,{
+    const categoryData = await Category.findByPk(idParams ,{
       
       include: [{model: Product}]
     });
-    if (!categoryDB) {
+    if (!categoryData) {
       res.status(404).json({ message: 'No category with this id!' });
       return;
     }
     
-  res.status(200).json(categoryDB)
+  res.status(200).json(categoryData)
   } catch (err) {
     res.status(500).json(err);
   }
@@ -41,8 +41,8 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   // create a new category
   try {
-    const categoryDB = await Category.create(req.body);
-    res.status(200).json(categoryDB);
+    const categoryData = await Category.create(req.body);
+    res.status(200).json(categoryData);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -51,16 +51,16 @@ router.post('/', async (req, res) => {
 router.put('/:id', async  (req, res) => {
   // update a category by its `id` value
   try {
-    const categoryDB = await Category.update(req.body, {
+    const categoryData = await Category.update(req.body, {
       where: {
         id: req.params.id,
       },
     });
-    if (!categoryDB[0]) {
+    if (!categoryData[0]) {
       res.status(404).json({ message: 'No category with this id!' });
       return;
     }
-    res.status(200).json(categoryDB);
+    res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -70,16 +70,16 @@ router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
   let idParams = req.params.id;
   try {
-    const categoryDB = await Category.destroy({
+    const categoryData = await Category.destroy({
       where: {
         id: idParams,
       }
     });
-    if(!categoryDB){
+    if(!categoryData){
       res.status(404).json({ message: 'No category with this id!' });
       return;
     } 
-    res.status(200).json(categoryDB);
+    res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
   }
