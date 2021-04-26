@@ -8,6 +8,7 @@ router.get('/', async (req, res) => {
   // be sure to include its associated Products
   try {
     const categoryDB = await Category.findAll({
+      //left join [{syntax}]
       include: [{model: Product}]
     });
     // if the categoryDB is successfully created, the new response will be returned as json
@@ -23,6 +24,7 @@ router.get('/:id', async (req, res) => {
   let idParams = req.params.id;
   try {
     const categoryDB = await Category.findByPk(idParams ,{
+      
       include: [{model: Product}]
     });
     if (!categoryDB) {
