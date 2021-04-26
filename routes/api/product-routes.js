@@ -8,7 +8,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', async(req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
-  //remember include will left join 
+  // When eager loading, we can force the query to return only records which have an associated model, effectively converting the query from the default OUTER JOIN to an INNER JOIN. This is done with the required: true option
   try {
     const productData = await Product.findAll(
       {
@@ -31,18 +31,18 @@ router.get('/', async(req, res) => {
 // get one product
 router.get('/:id', async (req, res) => {
   // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  // be sure to include its associated Category and Tag data(join)
 
   try {
-    const productData = await Product.findbypk(req.params.id,
+    const productData = await Product.findBypk(req.params.id,
       {
       include: [
         {
-        model: Category
+        model: Category, required: false,
         },
         {
           //product belongToMany Tags through ProductTag
-          model: Tag, through: ProductTag
+        model: Tag, through: ProductTag, required: false,
         }
     ]
     });
